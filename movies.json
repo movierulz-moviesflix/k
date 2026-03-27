@@ -1,4 +1,4 @@
-{"slug":"movie-0001","title":"Movie 0001","year":1980,"desc":"Description for Movie 0001","image":"https://picsum.photos/seed/movie-0001/500/750","keywords":"Movie 0001 1980"},
+[{"slug":"movie-0001","title":"Movie 0001","year":1980,"desc":"Description for Movie 0001","image":"https://picsum.photos/seed/movie-0001/500/750","keywords":"Movie 0001 1980"},
 {"slug":"movie-0002","title":"Movie 0002","year":1981,"desc":"Description for Movie 0002","image":"https://picsum.photos/seed/movie-0002/500/750","keywords":"Movie 0002 1981"},
 {"slug":"movie-0003","title":"Movie 0003","year":1982,"desc":"Description for Movie 0003","image":"https://picsum.photos/seed/movie-0003/500/750","keywords":"Movie 0003 1982"},
 {"slug":"movie-0004","title":"Movie 0004","year":1983,"desc":"Description for Movie 0004","image":"https://picsum.photos/seed/movie-0004/500/750","keywords":"Movie 0004 1983"},
@@ -18,3 +18,4 @@
 {"slug":"movie-0018","title":"Movie 0018","year":1997,"desc":"Description for Movie 0018","image":"https://picsum.photos/seed/movie-0018/500/750","keywords":"Movie 0018 1997"},
 {"slug":"movie-0019","title":"Movie 0019","year":1998,"desc":"Description for Movie 0019","image":"https://picsum.photos/seed/movie-0019/500/750","keywords":"Movie 0019 1998"},
 {"slug":"movie-0020","title":"Movie 0020","year":1999,"desc":"Description for Movie 0020","image":"https://picsum.photos/seed/movie-0020/500/750","keywords":"Movie 0020 1999"},
+]
