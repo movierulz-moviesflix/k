@@ -1,83 +1,48 @@
 const grid = document.getElementById("grid");
 const searchBox = document.getElementById("searchBox");
+const dropdown = document.getElementById("dropdown");
 
 let movies = [];
 
-// Create dropdown
-const dropdown = document.createElement("div");
-dropdown.style.position = "absolute";
-dropdown.style.background = "#222";
-dropdown.style.width = "300px";
-dropdown.style.margin = "auto";
-dropdown.style.left = "0";
-dropdown.style.right = "0";
-dropdown.style.zIndex = "1000";
-document.body.appendChild(dropdown);
-
-// Load data
 fetch("movies.json")
-.then(res => res.json())
-.then(data => {
-  movies = data;
-  displayMovies(movies);
-});
+  .then(res => res.json())
+  .then(data => {
+    movies = data;
+    displayMovies(movies.slice(0, 20)); // show trending 20
+  });
 
-function displayMovies(list){
+function displayMovies(list) {
   grid.innerHTML = "";
-
-  if(list.length === 0){
-    grid.innerHTML = "<p>No results found</p>";
-    return;
-  }
-
+  if(list.length === 0) grid.innerHTML = "<p>No results found</p>";
   list.forEach(movie => {
-    grid.innerHTML += `
-      <a href="movie.html?name=${movie.slug}">
-        <div class="card">
-          <img src="${movie.image}" loading="lazy" alt="${movie.title}">
-          <h3>${movie.title}</h3>
-        </div>
-      </a>
-    `;
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `<img src="${movie.image}" alt="${movie.title}">
+                      <h3>${movie.title}</h3>`;
+    card.onclick = () => window.location.href = `movie.html?name=${movie.slug}`;
+    grid.appendChild(card);
   });
 }
 
-// Search input
 searchBox.addEventListener("input", () => {
   const query = searchBox.value.toLowerCase();
   dropdown.innerHTML = "";
-
-  if(query === ""){
-    displayMovies(movies);
+  if(query === "") {
+    displayMovies(movies.slice(0, 20));
     return;
   }
-
-  const filtered = movies.filter(movie =>
-    movie.title.toLowerCase().includes(query)
-  );
-
+  const filtered = movies.filter(m => m.title.toLowerCase().includes(query));
   displayMovies(filtered);
-
-  // 🔥 Auto redirect if exact match
-  const exact = movies.find(m =>
-    m.title.toLowerCase() === query
-  );
-
-  if(exact){
-    window.location.href = `movie.html?name=${exact.slug}`;
-  }
-
-  // 🔥 Dropdown suggestions
+  
+  // dropdown suggestions
   filtered.slice(0,5).forEach(movie => {
-    const item = document.createElement("div");
-    item.style.padding = "10px";
-    item.style.cursor = "pointer";
-    item.innerText = movie.title;
-
-    item.onclick = () => {
-      window.location.href = `movie.html?name=${movie.slug}`;
-    };
-
-    dropdown.appendChild(item);
+    const div = document.createElement("div");
+    div.textContent = movie.title;
+    div.onclick = () => window.location.href = `movie.html?name=${movie.slug}`;
+    dropdown.appendChild(div);
   });
+
+  // auto redirect on exact match
+  const exact = movies.find(m => m.title.toLowerCase() === query);
+  if(exact) window.location.href = `movie.html?name=${exact.slug}`;
 });
