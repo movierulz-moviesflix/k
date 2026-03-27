@@ -15,7 +15,7 @@ dropdown.style.zIndex = "1000";
 document.body.appendChild(dropdown);
 
 // Load data
-fetch("data/movies.json")
+fetch("movies.json")
 .then(res => res.json())
 .then(data => {
   movies = data;
