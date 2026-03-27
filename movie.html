@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title id="title"></title>
+  <meta name="description" id="desc">
+  <meta name="keywords" id="keywords">
+
+  <script type="application/ld+json" id="schema"></script>
+</head>
+
+<body>
+
+<h1 id="movieTitle"></h1>
+<img id="movieImg" width="200">
+<p id="movieDesc"></p>
+
+<button onclick="goTelegram()">Get Updates on Telegram</button>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const slug = params.get("name");
+
+fetch("data/movies.json")
+.then(res => res.json())
+.then(data => {
+  const movie = data.find(m => m.slug === slug);
+
+  if(movie){
+    document.getElementById("title").innerText = movie.title;
+    document.getElementById("desc").content = movie.desc;
+    document.getElementById("keywords").content = movie.keywords;
+
+    document.getElementById("movieTitle").innerText = movie.title;
+    document.getElementById("movieDesc").innerText = movie.desc;
+    document.getElementById("movieImg").src = movie.image;
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Movie",
+      "name": movie.title,
+      "description": movie.desc,
+      "image": movie.image,
+      "datePublished": movie.year
+    };
+
+    document.getElementById("schema").textContent = JSON.stringify(schema);
+  }
+});
+
+function goTelegram(){
+  window.location.href = "https://t.me/sample_bot";
+}
+</script>
+
+</body>
+</html>
