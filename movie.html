@@ -1,57 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title id="title"></title>
-  <meta name="description" id="desc">
-  <meta name="keywords" id="keywords">
-
-  <script type="application/ld+json" id="schema"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="title">Movie Detail</title>
+<meta name="description" id="desc">
+<meta name="keywords" id="keywords">
+<script type="application/ld+json" id="schema"></script>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
 <h1 id="movieTitle"></h1>
-<img id="movieImg" width="200">
+<img id="movieImg" width="300">
 <p id="movieDesc"></p>
+<h3>Related Movies</h3>
+<div id="related"></div>
 
-<button onclick="goTelegram()">Get Updates on Telegram</button>
+<button onclick="goTelegram()">Join Telegram</button>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 const slug = params.get("name");
 
-fetch("data/movies.json")
-.then(res => res.json())
-.then(data => {
+fetch("movies.json").then(r => r.json()).then(data => {
   const movie = data.find(m => m.slug === slug);
-
-  if(movie){
-    document.getElementById("title").innerText = movie.title;
-    document.getElementById("desc").content = movie.desc;
-    document.getElementById("keywords").content = movie.keywords;
-
-    document.getElementById("movieTitle").innerText = movie.title;
-    document.getElementById("movieDesc").innerText = movie.desc;
-    document.getElementById("movieImg").src = movie.image;
-
-    const schema = {
-      "@context": "https://schema.org",
-      "@type": "Movie",
-      "name": movie.title,
-      "description": movie.desc,
-      "image": movie.image,
-      "datePublished": movie.year
-    };
-
-    document.getElementById("schema").textContent = JSON.stringify(schema);
-  }
+  if(!movie) return;
+  
+  document.getElementById("title").innerText = movie.title;
+  document.getElementById("desc").content = movie.desc;
+  document.getElementById("keywords").content = movie.keywords;
+  
+  document.getElementById("movieTitle").innerText = movie.title;
+  document.getElementById("movieDesc").innerText = movie.desc;
+  document.getElementById("movieImg").src = movie.image;
+  
+  // Schema markup
+  document.getElementById("schema").textContent = JSON.stringify({
+    "@context":"https://schema.org",
+    "@type":"Movie",
+    "name": movie.title,
+    "description": movie.desc,
+    "image": movie.image,
+    "datePublished": movie.year
+  });
+  
+  // Related movies (same year)
+  const related = data.filter(m => m.year === movie.year && m.slug !== slug).slice(0,5);
+  const relDiv = document.getElementById("related");
+  related.forEach(r => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `<img src="${r.image}" alt="${r.title}"><h3>${r.title}</h3>`;
+    card.onclick = () => window.location.href = `movie.html?name=${r.slug}`;
+    relDiv.appendChild(card);
+  });
 });
 
-function goTelegram(){
+function goTelegram() {
   window.location.href = "https://t.me/sample_bot";
 }
 </script>
-
 </body>
 </html>
